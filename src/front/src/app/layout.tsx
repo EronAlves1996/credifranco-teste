@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Box, Container, Stack, Typography } from "@mui/material";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,39 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <main>
+          <Container>
+            <Stack minHeight="100vh">
+              <Box borderBottom="3px solid">
+                <Typography variant="h2" textAlign="center">
+                  Supermercado Credifranco
+                </Typography>
+              </Box>
+              <Stack
+                flexGrow={1}
+                justifyContent="center"
+                alignItems="center"
+                sx={{
+                  backgroundImage: "url(./market-stock.jpg)",
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                }}
+              >
+                <Stack
+                  direction="row"
+                  justifyContent="space-around"
+                  flexGrow={0.7}
+                  width="80%"
+                  sx={{ backgroundColor: "#FFFFFFAA" }}
+                >
+                  {children}
+                </Stack>
+              </Stack>
+            </Stack>
+          </Container>
+        </main>
+      </body>
     </html>
   );
 }
