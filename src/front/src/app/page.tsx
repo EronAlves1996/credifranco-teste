@@ -11,10 +11,7 @@ export default function Home() {
       </Stack>
       <Stack justifyContent="space-evenly">
         <Link href="/auth">
-          <DefaultButton>Área de Clientes</DefaultButton>
-        </Link>
-        <Link href="/auth">
-          <DefaultButton>Área do Gerente</DefaultButton>
+          <DefaultButton>Área Exclusiva</DefaultButton>
         </Link>
       </Stack>
     </>
