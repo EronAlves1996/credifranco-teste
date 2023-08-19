@@ -5,7 +5,9 @@ export default function Home() {
   return (
     <>
       <Stack justifyContent="center">
-        <DefaultButton>Sistema de Caixa</DefaultButton>
+        <Link href="/cashier">
+          <DefaultButton>Sistema de Caixa</DefaultButton>
+        </Link>
       </Stack>
       <Stack justifyContent="space-evenly">
         <Link href="/auth">
