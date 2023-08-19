@@ -1,19 +1,19 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Link, Stack } from "@mui/material";
+import { DefaultButton } from "../components/DefaultButton";
 
-const InitialPageButton = ({ children }: React.PropsWithChildren) => (
-  <Button variant="outlined" size="large" sx={{ backgroundColor: "#FFF" }}>
-    <Typography fontWeight="bold">{children}</Typography>
-  </Button>
-);
 export default function Home() {
   return (
     <>
       <Stack justifyContent="center">
-        <InitialPageButton>Sistema de Caixa</InitialPageButton>
+        <DefaultButton>Sistema de Caixa</DefaultButton>
       </Stack>
       <Stack justifyContent="space-evenly">
-        <InitialPageButton>Área de Clientes</InitialPageButton>
-        <InitialPageButton>Área do Gerente</InitialPageButton>
+        <Link href="/auth">
+          <DefaultButton>Área de Clientes</DefaultButton>
+        </Link>
+        <Link href="/auth">
+          <DefaultButton>Área do Gerente</DefaultButton>
+        </Link>
       </Stack>
     </>
   );
