@@ -44,6 +44,7 @@ export default function RootLayout({
                   justifyContent="space-around"
                   flexGrow={0.7}
                   width="80%"
+                  boxSizing="border-box"
                   sx={{ backgroundColor: "#FFFFFFAA" }}
                 >
                   {children}
