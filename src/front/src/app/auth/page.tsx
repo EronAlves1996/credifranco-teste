@@ -2,7 +2,7 @@ import { DefaultButton } from "@/components/DefaultButton";
 import { Box, FormLabel, Stack, TextField } from "@mui/material";
 
 const formFields = [
-  { label: "CPF", type: "text" },
+  { label: "Seu ID", type: "text" },
   { label: "Senha", type: "password" },
 ];
 
@@ -12,7 +12,7 @@ export default function Home() {
       <Box component="form">
         <Stack gap="2rem">
           <FormLabel sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-            Área de Clientes
+            Área Exclusiva
           </FormLabel>
           {formFields.map((fieldInfo, i) => (
             <TextField
