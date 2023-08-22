@@ -1,10 +1,14 @@
-export type User = {
+type User = {
   accumulated_points: number;
   created_at: string;
   id: number;
   name: string;
   role: "MANAGER" | "CLIENT";
   updated_at: string;
+};
+
+export const isUser = (object: unknown): object is User => {
+  return "role" in (object as User);
 };
 
 const store: Record<"XSRF_TOKEN" | "CURRENT_USER", string | User> = {

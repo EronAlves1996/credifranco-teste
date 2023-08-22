@@ -1,15 +1,35 @@
 "use client";
 import { PropsWithChildren } from "react";
-import * as authStore from "../authStore";
+import * as authStore from "../../authStore";
 import { Box } from "@mui/material";
 import { config } from "@/config";
-import { useRouter } from "next/navigation";
-import { getCsrfToken } from "../security/getCsrfToken";
-import { storeCsrf } from "../security/storeCsrf";
-import { redirectUserToExclusiveArea } from "../security/redirectToExclusiveArea";
+import { redirect } from "next/navigation";
+
+const isUser = (object: unknown): object is authStore.User => {
+  return "role" in (object as authStore.User);
+};
+
+const storeCsrf = () => {
+  const token = document.cookie
+    .split("; ")
+    .find((cookie) => cookie.includes("XSRF-TOKEN"))
+    ?.split("=")[1];
+
+  if (token) authStore.put("XSRF_TOKEN", decodeURIComponent(token));
+};
+
+const redirectUserToExclusiveArea = () => {
+  const user = authStore.get("CURRENT_USER");
+
+  if (!isUser(user)) return redirect("/");
+
+  const { role } = user;
+
+  if (role === "MANAGER") return redirect("/manager");
+  if (role === "CLIENT") return redirect("/clients");
+};
 
 export const Form = ({ children }: PropsWithChildren) => {
-  const router = useRouter();
   return (
     <Box
       component="form"
@@ -21,7 +41,10 @@ export const Form = ({ children }: PropsWithChildren) => {
 
         const payload = Object.fromEntries(formData);
 
-        getCsrfToken()
+        fetch(config.API_URL + "sanctum/csrf-cookie", {
+          credentials: "include",
+        })
+          .then(() => storeCsrf())
           .then(() =>
             fetch(config.API_URL + "api/login", {
               body: JSON.stringify(payload),
@@ -37,10 +60,9 @@ export const Form = ({ children }: PropsWithChildren) => {
           .then((response) => response.json())
           .then((user) => {
             authStore.put("CURRENT_USER", user);
-            redirectUserToExclusiveArea(router);
+            redirectUserToExclusiveArea();
             storeCsrf();
-          })
-          .catch(console.log);
+          });
       }}
     >
       {children}
