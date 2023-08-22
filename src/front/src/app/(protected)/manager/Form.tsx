@@ -3,6 +3,8 @@ import { PropsWithChildren } from "react";
 import { Box } from "@mui/material";
 import { config } from "@/config";
 import * as authStore from "../../authStore";
+import { createProduct } from "@/app/utils/fetchUtils";
+import { extractPayloadFromForm } from "@/app/utils/extractPayloadFromForm";
 
 export const Form = ({ children }: PropsWithChildren) => {
   return (
@@ -12,20 +14,9 @@ export const Form = ({ children }: PropsWithChildren) => {
         e.preventDefault();
         const { target } = e;
 
-        const formData = new FormData(target as unknown as HTMLFormElement);
+        const payload = extractPayloadFromForm(target);
 
-        const payload = Object.fromEntries(formData);
-
-        fetch(config.API_URL + "api/product", {
-          method: "POST",
-          body: JSON.stringify(payload),
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            "X-XSRF-TOKEN": authStore.get("XSRF_TOKEN"),
-          } as HeadersInit,
-          credentials: "include",
-        }).then((res) => {
+        createProduct(payload).then((res) => {
           if (res.ok) console.log(res);
           else console.log("error");
         });

@@ -2,11 +2,12 @@
 import { PropsWithChildren } from "react";
 import * as authStore from "./authStore";
 import { Box } from "@mui/material";
-import { config } from "@/config";
 import { useRouter } from "next/navigation";
-import { getCsrfToken } from "./security/getCsrfToken";
+import { getCsrfToken } from "./utils/getCsrfToken";
 import { storeCsrf } from "./security/storeCsrf";
 import { redirectUserToExclusiveArea } from "./security/redirectToExclusiveArea";
+import { extractPayloadFromForm } from "./utils/extractPayloadFromForm";
+import { makeLogin } from "./utils/fetchUtils";
 
 export const Form = ({ children }: PropsWithChildren) => {
   const router = useRouter();
@@ -17,30 +18,17 @@ export const Form = ({ children }: PropsWithChildren) => {
         e.preventDefault();
         const { target } = e;
 
-        const formData = new FormData(target as unknown as HTMLFormElement);
-
-        const payload = Object.fromEntries(formData);
+        const payload = extractPayloadFromForm(target);
 
         getCsrfToken()
-          .then(() =>
-            fetch(config.API_URL + "api/login", {
-              body: JSON.stringify(payload),
-              method: "POST",
-              credentials: "include",
-              headers: {
-                "X-XSRF-TOKEN": authStore.get("XSRF_TOKEN"),
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              } as HeadersInit,
-            })
-          )
+          .then(() => makeLogin(payload))
           .then((response) => response.json())
           .then((user) => {
             authStore.put("CURRENT_USER", user);
             redirectUserToExclusiveArea(router);
             storeCsrf();
           })
-          .catch(console.log);
+          .catch(alert);
       }}
     >
       {children}

@@ -7,6 +7,10 @@ export type User = {
   updated_at: string;
 };
 
+type KeysOfStore = keyof typeof store;
+type SubscriptionFunction = (value: User | string) => void;
+type SubscribeObject = Record<KeysOfStore, SubscriptionFunction>;
+
 export const isUser = (object: unknown): object is User => {
   return "role" in (object as User);
 };
@@ -16,12 +20,9 @@ const store: Record<"XSRF_TOKEN" | "CURRENT_USER", string | User> = {
   CURRENT_USER: {} as User,
 };
 
-type keysOfStore = keyof typeof store;
+const subscribers: Array<SubscribeObject> = [];
 
-const subscribers: Array<Record<keysOfStore, (value: User | string) => void>> =
-  [];
-
-export const put = (key: keysOfStore, value: string | User) => {
+export const put = (key: KeysOfStore, value: string | User) => {
   subscribers
     .filter((subscriber) => Object.keys(subscriber)[0] === key)
     .forEach((subscriber) => {
@@ -31,18 +32,15 @@ export const put = (key: keysOfStore, value: string | User) => {
   store[key] = value;
 };
 
-export const get = (key: keysOfStore) => {
+export const get = (key: KeysOfStore) => {
   return store[key];
 };
 
 export const subscribe = (
-  key: keysOfStore,
-  subscriptionFunction: (value: User | string) => void
+  key: KeysOfStore,
+  subscriptionFunction: SubscriptionFunction
 ) => {
-  const subscriptionRecord: Record<
-    keysOfStore,
-    (value: User | string) => void
-  > = {} as Record<keysOfStore, (value: User | string) => void>;
+  const subscriptionRecord: SubscribeObject = {} as SubscribeObject;
 
   subscriptionRecord[key] = subscriptionFunction;
 

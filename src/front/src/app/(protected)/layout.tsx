@@ -1,11 +1,10 @@
 "use client";
 import { PropsWithChildren, useEffect } from "react";
-import { config } from "@/config";
 import * as authStore from "../authStore";
-import { getCsrfToken } from "../security/getCsrfToken";
+import { getCsrfToken } from "../utils/getCsrfToken";
 import { usePathname, useRouter } from "next/navigation";
 import { redirectUserToExclusiveArea } from "../security/redirectToExclusiveArea";
-import { storeCsrf } from "../security/storeCsrf";
+import { checkActiveSession } from "../utils/fetchUtils";
 
 export default function ProtectedLayout({ children }: PropsWithChildren) {
   const pathname = usePathname();
@@ -15,36 +14,28 @@ export default function ProtectedLayout({ children }: PropsWithChildren) {
     (async () => {
       const user = authStore.get("CURRENT_USER");
 
-      if (!authStore.isUser(user)) {
-        const token = authStore.get("XSRF_TOKEN");
+      try {
+        if (!authStore.isUser(user)) {
+          const token = authStore.get("XSRF_TOKEN");
 
-        if (!token) {
-          await getCsrfToken();
-        }
+          if (!token) {
+            await getCsrfToken();
+          }
 
-        const response = await fetch(config.API_URL + "api/user", {
-          credentials: "include",
-          headers: {
-            "X-XSRF-TOKEN": authStore.get("XSRF_TOKEN"),
-            Acccept: "application/json",
-          } as HeadersInit,
-        });
+          const response = await checkActiveSession();
 
-        if (response.ok) {
-          const user = await response.json();
+          if (response.ok) {
+            const user = await response.json();
 
-          if (authStore.isUser(user)) {
-            authStore.put("CURRENT_USER", user);
-            return redirectUserToExclusiveArea(router);
+            if (authStore.isUser(user)) {
+              authStore.put("CURRENT_USER", user);
+            }
           }
         }
-
-        return router.push("/");
+      } catch (e) {
+      } finally {
+        redirectUserToExclusiveArea(router);
       }
-
-      const { role } = user;
-
-      if (role !== "MANAGER") return router.push("/clients");
     })();
   }, [pathname, router]);
 

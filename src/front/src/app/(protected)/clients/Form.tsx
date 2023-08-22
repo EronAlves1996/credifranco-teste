@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
 import { PropsWithChildren } from "react";
 import * as authStore from "../../authStore";
-import { config } from "@/config";
+import { checkActiveSession, updateUserInfo } from "@/app/utils/fetchUtils";
+import { extractPayloadFromForm } from "@/app/utils/extractPayloadFromForm";
 
 export const Form = ({ children }: PropsWithChildren) => {
   return (
@@ -12,11 +13,8 @@ export const Form = ({ children }: PropsWithChildren) => {
 
         const { target } = e;
 
-        const formData = Object.fromEntries(
-          new FormData(target as HTMLFormElement)
-        );
+        const formData = extractPayloadFromForm(target);
 
-        const token = authStore.get("XSRF_TOKEN");
         const user = structuredClone(authStore.get("CURRENT_USER"));
 
         if (!authStore.isUser(user)) return;
@@ -29,27 +27,11 @@ export const Form = ({ children }: PropsWithChildren) => {
 
         user.accumulated_points = newPoints;
 
-        fetch(config.API_URL + "api/user/" + user.id, {
-          credentials: "include",
-          method: "PUT",
-          body: JSON.stringify(user),
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "X-XSRF-TOKEN": token,
-          } as HeadersInit,
-        })
+        updateUserInfo(user.id, user)
           .then((res) => {
             if (!res.ok) throw new Error("User not updated");
-            return fetch(config.API_URL + "api/user", {
-              credentials: "include",
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-                "X-XSRF-TOKEN": token,
-              } as HeadersInit,
-            });
+            // gonna refetch user info
+            return checkActiveSession();
           })
           .then((res) => res.json())
           .then((user) => authStore.put("CURRENT_USER", user));
