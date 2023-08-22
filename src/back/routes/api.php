@@ -34,7 +34,7 @@ Route::post("/login", function (Request $request) {
     return response()->json(Auth::user(), 200);
 });
 
-Route::post('/product', function (Request $request) {
+Route::middleware('auth:sanctum')->post('/product', function (Request $request) {
     $user = $request->user();
 
     if ($user->role !== 'MANAGER') return response(null, 401);
