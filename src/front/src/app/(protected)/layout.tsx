@@ -4,9 +4,7 @@ import * as authStore from "../authStore";
 import { getCsrfToken } from "../utils/getCsrfToken";
 import { usePathname, useRouter } from "next/navigation";
 import { redirectUserToExclusiveArea } from "../security/redirectToExclusiveArea";
-import { checkActiveSession, doLogout } from "../utils/fetchUtils";
-import { Button, Stack } from "@mui/material";
-import { DefaultButton } from "@/components/DefaultButton";
+import { checkActiveSession } from "../utils/fetchUtils";
 
 export default function ProtectedLayout({ children }: PropsWithChildren) {
   const pathname = usePathname();
@@ -41,20 +39,5 @@ export default function ProtectedLayout({ children }: PropsWithChildren) {
     })();
   }, [pathname, router]);
 
-  return (
-    <Stack width="100%">
-      <DefaultButton
-        sx={{ alignSelf: "flex-end" }}
-        onClick={() => {
-          doLogout().then(() => {
-            authStore.put("CURRENT_USER", {} as authStore.User);
-            redirectUserToExclusiveArea(router);
-          });
-        }}
-      >
-        Logout
-      </DefaultButton>
-      {children}
-    </Stack>
-  );
+  return <>{children}</>;
 }
