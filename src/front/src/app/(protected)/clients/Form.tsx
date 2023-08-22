@@ -3,8 +3,12 @@ import { PropsWithChildren } from "react";
 import * as authStore from "../../authStore";
 import { checkActiveSession, updateUserInfo } from "@/app/utils/fetchUtils";
 import { extractPayloadFromForm } from "@/app/utils/extractPayloadFromForm";
+import { toast } from "react-toastify";
 
 export const Form = ({ children }: PropsWithChildren) => {
+  const notify = (content: string, type: "error" | "success") =>
+    toast(content, { type });
+
   return (
     <Box
       component="form"
@@ -22,6 +26,11 @@ export const Form = ({ children }: PropsWithChildren) => {
         const newPoints = user.accumulated_points - Number(formData["points"]);
 
         if (isNaN(newPoints) || newPoints < 0) {
+          notify(
+            "Pontos para voucher são maiores do que os pontos que você tem",
+            "error"
+          );
+
           throw new Error("Invalid Points");
         }
 
@@ -29,7 +38,12 @@ export const Form = ({ children }: PropsWithChildren) => {
 
         updateUserInfo(user.id, user)
           .then((res) => {
-            if (!res.ok) throw new Error("User not updated");
+            if (!res.ok) {
+              notify("Voucher não foi criado", "error");
+              throw new Error("");
+            }
+
+            notify("Seu voucher XXX foi criado com sucesso", "success");
             // gonna refetch user info
             return checkActiveSession();
           })
