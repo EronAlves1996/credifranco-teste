@@ -5,7 +5,7 @@ import { DefaultButton } from "@/components/DefaultButton";
 const formFields = [
   { label: "Produto", type: "text", name: "product" },
   { label: "Preço", type: "number", name: "price" },
-  { label: "Desconto", type: "number", name: "discount" },
+  { label: "Desconto", type: "number", name: "discount", min: "0", max: "100" },
 ];
 
 export default function ManagerArea() {
