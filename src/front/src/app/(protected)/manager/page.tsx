@@ -1,19 +1,25 @@
-import { DefaultButton } from "@/components/DefaultButton";
 import { FormLabel, Stack, TextField } from "@mui/material";
 import { Form } from "./Form";
+import { DefaultButton } from "@/components/DefaultButton";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Area do Gerente",
+};
 
 const formFields = [
-  { label: "Seu ID", type: "text", name: "identification" },
-  { label: "Senha", type: "password", name: "password" },
+  { label: "Produto", type: "text", name: "product" },
+  { label: "Preço", type: "number", name: "price" },
+  { label: "Desconto", type: "number", name: "discount", min: "0", max: "100" },
 ];
 
-export default function Home() {
+export default function ManagerArea() {
   return (
     <Stack justifyContent="center">
       <Form>
         <Stack gap="2rem">
           <FormLabel sx={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-            Área Exclusiva
+            Registrar Promoção
           </FormLabel>
           {formFields.map((fieldInfo, i) => (
             <TextField
@@ -24,7 +30,7 @@ export default function Home() {
               {...fieldInfo}
             />
           ))}
-          <DefaultButton type="submit">Login</DefaultButton>
+          <DefaultButton type="submit">Registrar Promoção</DefaultButton>
         </Stack>
       </Form>
     </Stack>
