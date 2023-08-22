@@ -8,10 +8,12 @@ import { storeCsrf } from "./security/storeCsrf";
 import { redirectUserToExclusiveArea } from "./security/redirectToExclusiveArea";
 import { extractPayloadFromForm } from "./utils/extractPayloadFromForm";
 import { makeLogin } from "./utils/fetchUtils";
-
+import { toast } from "react-toastify";
 
 export const Form = ({ children }: PropsWithChildren) => {
   const router = useRouter();
+  const notify = (content: string) => toast(content, { type: "error" });
+
   return (
     <Box
       component="form"
@@ -29,7 +31,7 @@ export const Form = ({ children }: PropsWithChildren) => {
             redirectUserToExclusiveArea(router);
             storeCsrf();
           })
-          .catch(alert);
+          .catch((err) => notify(err.message));
       }}
     >
       {children}

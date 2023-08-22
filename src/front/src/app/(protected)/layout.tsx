@@ -5,12 +5,14 @@ import { getCsrfToken } from "../utils/getCsrfToken";
 import { usePathname, useRouter } from "next/navigation";
 import { redirectUserToExclusiveArea } from "../security/redirectToExclusiveArea";
 import { checkActiveSession, doLogout } from "../utils/fetchUtils";
-import { Button, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { DefaultButton } from "@/components/DefaultButton";
+import { toast } from "react-toastify";
 
 export default function ProtectedLayout({ children }: PropsWithChildren) {
   const pathname = usePathname();
   const router = useRouter();
+  const notify = (content: string) => toast(content);
 
   useEffect(() => {
     (async () => {
@@ -49,6 +51,7 @@ export default function ProtectedLayout({ children }: PropsWithChildren) {
           doLogout().then(() => {
             authStore.put("CURRENT_USER", {} as authStore.User);
             redirectUserToExclusiveArea(router);
+            notify("Deslogado com sucesso!");
           });
         }}
       >
