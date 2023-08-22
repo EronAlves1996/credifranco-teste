@@ -1,4 +1,4 @@
-type User = {
+export type User = {
   accumulated_points: number;
   created_at: string;
   id: number;
