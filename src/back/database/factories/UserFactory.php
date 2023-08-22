@@ -21,7 +21,7 @@ class UserFactory extends Factory
             'name' => fake('pt_BR')->unique()->name(),
             'identification' => fake()->unique()->numerify('###########'),
             'identification_type' => 'cpf',
-            'password' => fake()->password(),
+            'password' => '1234',
             'accumulated_points' => fake()->numerify('##')
         ];
     }
