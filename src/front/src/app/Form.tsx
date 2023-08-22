@@ -9,6 +9,7 @@ import { redirectUserToExclusiveArea } from "./security/redirectToExclusiveArea"
 import { extractPayloadFromForm } from "./utils/extractPayloadFromForm";
 import { makeLogin } from "./utils/fetchUtils";
 
+
 export const Form = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   return (
