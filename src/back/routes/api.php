@@ -65,12 +65,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
         return response(null, 201, ['Location' => "/product/{$product->id}"]);
     });
-
-    Route::post('/logout', function (Request $request) {
-        $request->session()->invalidate();
-
-        return response(null, 200);
-    });
 });
 
 
