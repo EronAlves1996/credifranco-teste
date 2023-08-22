@@ -1,17 +1,22 @@
 "use client";
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import * as authStore from "../authStore";
 import { getCsrfToken } from "../utils/getCsrfToken";
 import { usePathname, useRouter } from "next/navigation";
 import { redirectUserToExclusiveArea } from "../security/redirectToExclusiveArea";
 import { checkActiveSession, doLogout } from "../utils/fetchUtils";
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { DefaultButton } from "@/components/DefaultButton";
 import { toast } from "react-toastify";
+
+const Loading = () => {
+  return <Typography variant="h3">Carregando...</Typography>;
+};
 
 export default function ProtectedLayout({ children }: PropsWithChildren) {
   const pathname = usePathname();
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const notify = (content: string) => toast(content);
 
   useEffect(() => {
@@ -39,25 +44,32 @@ export default function ProtectedLayout({ children }: PropsWithChildren) {
       } catch (e) {
       } finally {
         redirectUserToExclusiveArea(router);
+        setLoading(false);
       }
     })();
   }, [pathname, router]);
 
   return (
     <Stack width="100%">
-      <DefaultButton
-        sx={{ alignSelf: "flex-end" }}
-        onClick={() => {
-          doLogout().then(() => {
-            authStore.put("CURRENT_USER", {} as authStore.User);
-            redirectUserToExclusiveArea(router);
-            notify("Deslogado com sucesso!");
-          });
-        }}
-      >
-        Logout
-      </DefaultButton>
-      {children}
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <DefaultButton
+            sx={{ alignSelf: "flex-end" }}
+            onClick={() => {
+              doLogout().then(() => {
+                authStore.put("CURRENT_USER", {} as authStore.User);
+                redirectUserToExclusiveArea(router);
+                notify("Deslogado com sucesso!");
+              });
+            }}
+          >
+            Logout
+          </DefaultButton>
+          {children}
+        </>
+      )}
     </Stack>
   );
 }
