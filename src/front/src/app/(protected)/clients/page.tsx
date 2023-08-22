@@ -4,6 +4,11 @@ import * as authStore from "../../authStore";
 import { useEffect, useState } from "react";
 import { Form } from "./Form";
 import { DefaultButton } from "@/components/DefaultButton";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Area do Cliente",
+};
 
 export default function ClientArea() {
   const [client, setClient] = useState<authStore.User>();

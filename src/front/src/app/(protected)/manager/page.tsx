@@ -1,6 +1,11 @@
 import { FormLabel, Stack, TextField } from "@mui/material";
 import { Form } from "./Form";
 import { DefaultButton } from "@/components/DefaultButton";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Area do Gerente",
+};
 
 const formFields = [
   { label: "Produto", type: "text", name: "product" },
