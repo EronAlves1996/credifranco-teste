@@ -1,12 +1,12 @@
 "use client";
 import { PropsWithChildren } from "react";
-import * as authStore from "../authStore";
+import * as authStore from "./authStore";
 import { Box } from "@mui/material";
 import { config } from "@/config";
 import { useRouter } from "next/navigation";
-import { getCsrfToken } from "../security/getCsrfToken";
-import { storeCsrf } from "../security/storeCsrf";
-import { redirectUserToExclusiveArea } from "../security/redirectToExclusiveArea";
+import { getCsrfToken } from "./security/getCsrfToken";
+import { storeCsrf } from "./security/storeCsrf";
+import { redirectUserToExclusiveArea } from "./security/redirectToExclusiveArea";
 
 export const Form = ({ children }: PropsWithChildren) => {
   const router = useRouter();
