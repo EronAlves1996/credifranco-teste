@@ -35,3 +35,7 @@ export const updateUserInfo = (id: number, body: object) => {
     body: JSON.stringify(body),
   });
 };
+
+export const doLogout = () => {
+  return fetcher(config.API_URL + 'api/logout', { method: "POST" });
+};
