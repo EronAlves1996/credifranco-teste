@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -31,4 +32,20 @@ Route::post("/login", function (Request $request) {
     $request->session()->regenerate();
 
     return response()->json(Auth::user(), 200);
+});
+
+Route::post('/product', function (Request $request) {
+    $user = $request->user();
+
+    if ($user->role !== 'MANAGER') return response(null, 401);
+
+    $product = $request->validate([
+        'product' => ['required', 'string'],
+        'price' => ['required', 'numeric'],
+        'discount' => ['required', 'numeric', 'between:0,100']
+    ]);
+
+    $product = Product::create($product);
+
+    return response(null, 201, ['Location' => "/product/{$product->id}"]);
 });
