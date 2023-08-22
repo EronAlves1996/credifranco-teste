@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,31 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+
+Route::middleware('auth:sanctum')->put('/user/{user}', function (User $user, Request $request) {
+    $updated_user = $request->validate([
+        'accumulated_points' => ['numeric', 'required'],
+        'id' => ['numeric', 'required'],
+        'identification' => ['numeric', 'required'],
+        'name' => ['required', 'string'],
+        'role' => ['required']
+    ]);
+
+    $requestingUser = $request->user();
+
+
+    if ($updated_user['id'] !== $user->id || $requestingUser->id !== $user->id) return response(null, 401);
+
+    $user->accumulated_points = $updated_user['accumulated_points'];
+    $user->identification = $updated_user['identification'];
+    $user->name = $updated_user['name'];
+    $user->role = $updated_user['role'];
+
+    $user->save();
+
+    return response(null, 200);
 });
 
 Route::post("/login", function (Request $request) {
