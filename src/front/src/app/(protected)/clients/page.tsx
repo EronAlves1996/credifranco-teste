@@ -1,7 +1,9 @@
 "use client";
-import { Stack, Typography } from "@mui/material";
+import { FormLabel, Stack, TextField, Typography } from "@mui/material";
 import * as authStore from "../../authStore";
 import { useEffect, useState } from "react";
+import { Form } from "./Form";
+import { DefaultButton } from "@/components/DefaultButton";
 
 export default function ClientArea() {
   const [client, setClient] = useState<authStore.User>();
@@ -22,6 +24,12 @@ export default function ClientArea() {
       <Typography>
         Você possui {client?.accumulated_points} para trocar por produtos!
       </Typography>
+
+      <Form>
+        <FormLabel>Gerar Voucher</FormLabel>
+        <TextField name="points" type="number" required />
+        <DefaultButton type="submit">Gerar</DefaultButton>
+      </Form>
     </Stack>
   );
 }
