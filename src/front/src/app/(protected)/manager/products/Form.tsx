@@ -5,7 +5,10 @@ import { createProduct } from "@/app/utils/fetchUtils";
 import { extractPayloadFromForm } from "@/app/utils/extractPayloadFromForm";
 import { toast } from "react-toastify";
 
-export const Form = ({ children }: PropsWithChildren) => {
+export const Form = ({
+  children,
+  refetchFunction,
+}: PropsWithChildren<{ refetchFunction: () => void }>) => {
   const notify = (content: string, type: "error" | "success") =>
     toast(content, { type });
 
@@ -18,10 +21,12 @@ export const Form = ({ children }: PropsWithChildren) => {
 
         const payload = extractPayloadFromForm(target);
 
-        createProduct(payload).then((res) => {
-          if (res.ok) notify("Produto criado com sucesso!", "success");
-          else notify("Ocorreu um erro", "error");
-        });
+        createProduct(payload)
+          .then((res) => {
+            if (res.ok) notify("Produto criado com sucesso!", "success");
+            else notify("Ocorreu um erro", "error");
+          })
+          .then(() => refetchFunction());
       }}
     >
       {children}
