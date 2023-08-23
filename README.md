@@ -15,9 +15,11 @@ Repositório contendo teste técnico para empresa Credfranco.
 
 - `/`: Página inicial, contém tela de login;
 - `/clients`: Área de clientes;
-- `/manager`: Área do gerente
+- `/manager`: Área do gerente;
+- `/manager/clients`: Área onde lista todos os clientes cadastrados;
+- `/manager/products`: Área onde cadastra um novo produto e lista todos os produtos em promoção cadastrados.
 
-As páginas `/clients` e `/manager` são protegidas através do layout que está sob o grupo `(protected)`.
+As páginas `/clients` e `/manager` e suas respectivas filhas são protegidas através do layout que está sob o grupo `(protected)`.
 
 Foi feita esta proteção somente via client side, visto que toda a infraestrutura que suporta a aplicação está localizada diretamente no backend
 
@@ -25,9 +27,12 @@ Foi feita esta proteção somente via client side, visto que toda a infraestrutu
 
 - `GET /sanctum/csrf-cookie`: Rota que fornece o token de CSRF para proteger o backend de ataques CSRF;
 - `POST /api/login`: Rota que autentica e persiste a seção do usuário;
+- `POST /api/logout`: Rota que invalida a seção do usuário, deslogando-o;
 - `GET /api/user`: Rota que devolve a informação do usuário logado atualmente;
 - `PUT /api/user/{id}`: Rota para atualização das informações do usuário;
-- `POST /api/product`: Rota para inclusão de um produto nas promoções disponíveis.
+- `POST /api/products`: Rota para inclusão de um produto nas promoções disponíveis;
+- `GET /api/products`: Rota que retorna todos os produtos em promoção salvos;
+- `GET /api/clients`: Rota que retorna informação de todos os clients.
 
 ## Estrutura do Banco de Dados
 
@@ -61,7 +66,15 @@ A tela inicial é parecida com o design abaixo:
 
 A área do gerente contém só um componente atualmente e é parecida com o design abaixo:
 
-![image](design/4%20-%20insert%20new%20promotion%20product.png)
+![image](design/6%20-%20Manager%20Screen.png)
+
+A área do gerente para gerenciar produtos é parecida com o design abaixo:
+
+![image](design/4.1%20-%20Product%20screen.png)
+
+A área do gerente para listar os clientes é parecida com o design abaixo:
+
+![image](design/7%20-%20clients%20list%20screen.png)
 
 A área do cliente é parecida com o design abaixo:
 
