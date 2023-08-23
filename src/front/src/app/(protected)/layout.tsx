@@ -43,7 +43,7 @@ export default function ProtectedLayout({ children }: PropsWithChildren) {
         }
       } catch (e) {
       } finally {
-        redirectUserToExclusiveArea(router);
+        redirectUserToExclusiveArea(router, pathname);
         setLoading(false);
       }
     })();
@@ -60,7 +60,7 @@ export default function ProtectedLayout({ children }: PropsWithChildren) {
             onClick={() => {
               doLogout().then(() => {
                 authStore.put("CURRENT_USER", {} as authStore.User);
-                redirectUserToExclusiveArea(router);
+                redirectUserToExclusiveArea(router, pathname);
                 notify("Deslogado com sucesso!");
               });
             }}
