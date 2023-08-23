@@ -35,11 +35,13 @@ export default function ClientList() {
     <Loading />
   ) : (
     <>
-      <Typography>Clientes</Typography>
+      <Typography typography="h4" alignSelf="center">
+        Clientes
+      </Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ backgroundColor: "aqua" }}>
               <TableCell>Identificação</TableCell>
               <TableCell>Nome</TableCell>
               <TableCell>Pontos Acumulados</TableCell>
