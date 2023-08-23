@@ -39,3 +39,7 @@ export const updateUserInfo = (id: number, body: object) => {
 export const doLogout = () => {
   return fetcher(config.API_URL + 'api/logout', { method: "POST" });
 };
+
+export const getClients = () => {
+  return fetcher(config.API_URL + 'api/clients', { method: 'GET' });
+}

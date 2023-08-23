@@ -50,6 +50,12 @@ Route::middleware('auth:sanctum')->group(function () {
         });
     });
 
+    Route::prefix('/clients')->group(function () {
+        Route::get('/', function () {
+            return User::query()->where('identification_type', '=', 'cpf')->get();
+        });
+    });
+
     Route::post('/product', function (Request $request) {
         $user = $request->user();
 

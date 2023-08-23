@@ -14,7 +14,7 @@ export default function ManagerArea() {
       <Link href="manager/products">
         <DefaultButton>Gerenciar Produtos</DefaultButton>
       </Link>
-      <Link href="./manageClients">
+      <Link href="manager/clients">
         <DefaultButton>Listar Clientes</DefaultButton>
       </Link>
     </Stack>
