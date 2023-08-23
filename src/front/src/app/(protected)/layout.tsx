@@ -5,13 +5,10 @@ import { getCsrfToken } from "../utils/getCsrfToken";
 import { usePathname, useRouter } from "next/navigation";
 import { redirectUserToExclusiveArea } from "../security/redirectToExclusiveArea";
 import { checkActiveSession, doLogout } from "../utils/fetchUtils";
-import { Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import { DefaultButton } from "@/components/DefaultButton";
 import { toast } from "react-toastify";
-
-const Loading = () => {
-  return <Typography variant="h3">Carregando...</Typography>;
-};
+import { Loading } from "./loadingComponent";
 
 export default function ProtectedLayout({ children }: PropsWithChildren) {
   const pathname = usePathname();
