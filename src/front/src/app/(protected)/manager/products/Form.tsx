@@ -1,6 +1,7 @@
+"use client";
 import { Box } from "@mui/material";
 import { PropsWithChildren } from "react";
-import * as authStore from "../../authStore";
+import * as authStore from "../../../authStore";
 import { checkActiveSession, updateUserInfo } from "@/app/utils/fetchUtils";
 import { extractPayloadFromForm } from "@/app/utils/extractPayloadFromForm";
 import { toast } from "react-toastify";

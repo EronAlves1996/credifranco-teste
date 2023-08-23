@@ -2,7 +2,7 @@
 import { FormLabel, Stack, TextField, Typography } from "@mui/material";
 import * as authStore from "../../authStore";
 import { useEffect, useState } from "react";
-import { Form } from "./Form";
+import { Form } from "../manager/products/Form";
 import { DefaultButton } from "@/components/DefaultButton";
 import { Metadata } from "next";
 

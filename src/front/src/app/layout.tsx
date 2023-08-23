@@ -35,7 +35,7 @@ export default function RootLayout({
                 justifyContent="center"
                 alignItems="center"
                 sx={{
-                  backgroundImage: "url(./market-stock.jpg)",
+                  backgroundImage: "url(/market-stock.jpg)",
                   backgroundRepeat: "no-repeat",
                   backgroundSize: "cover",
                 }}
