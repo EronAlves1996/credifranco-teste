@@ -92,25 +92,31 @@ CREATE DATABASE credfranco
 
 2 - Após inicializar o banco de dados, configure o seu `.env`, na pasta `src/back`, seguindo o exemplo fornecido no `.env.example`. Todos os campos são essenciais. Se for rodar com o banco de dados `credfranco` rodando no mysql, localmente, então as informações do `.env.example` são suficientes, basta renomeá-lo para `.env`.
 
-3 - Feito isso, faça as migrações e o seed do banco de dados.
+3 - Instale as dependências do backend, com o seguinte comando:
+
+```sh
+composer install
+```
+
+4 - Feito isso, faça as migrações e o seed do banco de dados.
 
 ```sh
 php artisan migrate --seed
 ```
 
-4 - Após isso rode o seu projeto no backend
+5 - Após isso rode o seu projeto no backend
 
 ```sh
 php artisan serve
 ```
 
-5 - Vá na pasta `src/front`, instale as dependências
+6 - Vá na pasta `src/front`, instale as dependências
 
 ```sh
 npm install
 ```
 
-6 - Rode o projeto. Ele irá ser servido em `localhost:3000`.
+7 - Rode o projeto. Ele irá ser servido em `localhost:3000`.
 
 ```sh
 npm run dev
