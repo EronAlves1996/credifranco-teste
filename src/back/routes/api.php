@@ -56,20 +56,27 @@ Route::middleware('auth:sanctum')->group(function () {
         });
     });
 
-    Route::post('/product', function (Request $request) {
-        $user = $request->user();
+    Route::prefix('/products')->group(function () {
 
-        if ($user->role !== 'MANAGER') return response(null, 401);
+        Route::post('/', function (Request $request) {
+            $user = $request->user();
 
-        $product = $request->validate([
-            'product' => ['required', 'string'],
-            'price' => ['required', 'numeric'],
-            'discount' => ['required', 'numeric', 'between:0,100']
-        ]);
+            if ($user->role !== 'MANAGER') return response(null, 401);
 
-        $product = Product::create($product);
+            $product = $request->validate([
+                'product' => ['required', 'string'],
+                'price' => ['required', 'numeric'],
+                'discount' => ['required', 'numeric', 'between:0,100']
+            ]);
 
-        return response(null, 201, ['Location' => "/product/{$product->id}"]);
+            $product = Product::create($product);
+
+            return response(null, 201, ['Location' => "/product/{$product->id}"]);
+        });
+
+        Route::get('/', function () {
+            return Product::all();
+        });
     });
 
     Route::post('/logout', function (Request $request) {
