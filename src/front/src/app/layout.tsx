@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Box, Container, Stack, Typography } from "@mui/material";
+import { Toastify } from "./Toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,7 +35,7 @@ export default function RootLayout({
                 justifyContent="center"
                 alignItems="center"
                 sx={{
-                  backgroundImage: "url(./market-stock.jpg)",
+                  backgroundImage: "url(/market-stock.jpg)",
                   backgroundRepeat: "no-repeat",
                   backgroundSize: "cover",
                 }}
@@ -52,6 +53,7 @@ export default function RootLayout({
               </Stack>
             </Stack>
           </Container>
+          <Toastify />
         </main>
       </body>
     </html>

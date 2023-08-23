@@ -23,7 +23,7 @@ export const checkActiveSession = () => {
 };
 
 export const createProduct = (body: object) => {
-  return fetcher(config.API_URL + "api/product", {
+  return fetcher(config.API_URL + "api/products", {
     method: "POST",
     body: JSON.stringify(body),
   });
@@ -35,3 +35,15 @@ export const updateUserInfo = (id: number, body: object) => {
     body: JSON.stringify(body),
   });
 };
+
+export const doLogout = () => {
+  return fetcher(config.API_URL + 'api/logout', { method: "POST" });
+};
+
+export const getClients = () => {
+  return fetcher(config.API_URL + 'api/clients', { method: 'GET' });
+}
+
+export const getProducts = () => {
+  return fetcher(config.API_URL + 'api/products', { method: 'GET' });
+}

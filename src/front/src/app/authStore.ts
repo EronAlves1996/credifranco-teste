@@ -32,7 +32,8 @@ export const put = (key: KeysOfStore, value: string | User) => {
   store[key] = value;
 };
 
-export const get = (key: KeysOfStore) => {
+
+export const get = (key: keysOfStore) => {
   return store[key];
 };
 

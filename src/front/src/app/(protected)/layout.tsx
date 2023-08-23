@@ -1,14 +1,20 @@
 "use client";
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import * as authStore from "../authStore";
 import { getCsrfToken } from "../utils/getCsrfToken";
 import { usePathname, useRouter } from "next/navigation";
 import { redirectUserToExclusiveArea } from "../security/redirectToExclusiveArea";
-import { checkActiveSession } from "../utils/fetchUtils";
+import { checkActiveSession, doLogout } from "../utils/fetchUtils";
+import { Stack } from "@mui/material";
+import { DefaultButton } from "@/components/DefaultButton";
+import { toast } from "react-toastify";
+import { Loading } from "./loadingComponent";
 
 export default function ProtectedLayout({ children }: PropsWithChildren) {
   const pathname = usePathname();
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const notify = (content: string) => toast(content);
 
   useEffect(() => {
     (async () => {
@@ -34,10 +40,33 @@ export default function ProtectedLayout({ children }: PropsWithChildren) {
         }
       } catch (e) {
       } finally {
-        redirectUserToExclusiveArea(router);
+        redirectUserToExclusiveArea(router, pathname);
+        setLoading(false);
       }
     })();
   }, [pathname, router]);
 
-  return <>{children}</>;
+  return (
+    <Stack width="100%">
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <DefaultButton
+            sx={{ alignSelf: "flex-end" }}
+            onClick={() => {
+              doLogout().then(() => {
+                authStore.put("CURRENT_USER", {} as authStore.User);
+                redirectUserToExclusiveArea(router, pathname);
+                notify("Deslogado com sucesso!");
+              });
+            }}
+          >
+            Logout
+          </DefaultButton>
+          {children}
+        </>
+      )}
+    </Stack>
+  );
 }
